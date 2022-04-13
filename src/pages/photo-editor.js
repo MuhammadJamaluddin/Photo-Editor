@@ -1,11 +1,25 @@
-import { useCallback } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import usePanZoom from "use-pan-and-zoom";
 
 import "../styles/photo-editor.scss";
 
 const PhotoEditor = () => {
-  const { transform, panZoomHandlers, setContainer } = usePanZoom({});
+  const [maxX, setMaxX] = useState(Infinity);
+  const { transform, panZoomHandlers, setContainer, container, pan } =
+    usePanZoom({
+      maxX,
+      onPan: (touches) => {
+        console.log("touches", touches[0].x);
+      },
+      minZoom: 0.75,
+    });
+
+  useEffect(() => {
+    if (container?.getBoundingClientRect().width && pan.x) {
+      setMaxX(0.12 * container.getBoundingClientRect().width - pan.x);
+    }
+  }, [container, pan]);
 
   const onDrop = useCallback((droppedFiles) => {
     //
@@ -31,11 +45,13 @@ const PhotoEditor = () => {
     <div className="App">
       <div className="photo-editor">
         <div className="photo-viewer">
+          {/* outer blue container */}
           <div
             className="image-outer-container"
             ref={(el) => setContainer(el)}
             {...panZoomHandlers}
           >
+            {/* inner red container around image */}
             <div className="image-inner-container" style={{ transform }}>
               {selectedImage}
             </div>

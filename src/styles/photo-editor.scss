@@ -39,6 +39,7 @@
   }
 
   .image-outer-container {
+    border: 1px solid blue;
     touch-action: none;
     position: absolute;
     top: 0;
@@ -56,6 +57,7 @@
 
   .image-outer-container::after {
     content: "";
+    border: 3px solid black;
     position: absolute;
     top: 0;
     left: 0;
@@ -71,6 +73,7 @@
   }
 
   .image-inner-container {
+    border: 1px solid red;
     background-size: cover;
     background-repeat: no-repeat;
     width: 100%;
